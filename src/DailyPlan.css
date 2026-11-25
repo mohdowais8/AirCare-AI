@@ -1,0 +1,341 @@
+
+.daily-plan-container {
+  padding: 28px;
+  color: #e8edf7;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.daily-plan-header {
+  margin-bottom: 30px;
+}
+
+.daily-plan-badge {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  font-weight: 800;
+  color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.10);
+  padding: 8px 12px;
+  border-radius: 30px;
+  margin-bottom: 14px;
+}
+
+.daily-plan-title h1 {
+  font-size: 32px;
+  margin: 0 0 10px;
+  letter-spacing: -1px;
+}
+
+.daily-plan-title p {
+  color: #94a3b8;
+  margin: 0;
+}
+
+.daily-plan-aqi {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.daily-plan-aqi-card {
+  background: linear-gradient(145deg, #172235, #101827);
+  border: 1px solid #263449;
+  border-radius: 22px;
+  padding: 25px;
+  position: relative;
+  overflow: hidden;
+}
+
+.daily-plan-aqi-card::after {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: rgba(52, 211, 153, 0.07);
+  right: -50px;
+  bottom: -60px;
+}
+
+.pm-card::after {
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.aqi-card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #9aabc2;
+  font-size: 14px;
+}
+
+.aqi-live-dot {
+  width: 8px;
+  height: 8px;
+  background: #34d399;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #34d399;
+}
+
+.aqi-big-number {
+  font-size: 45px;
+  font-weight: 800;
+  margin-top: 15px;
+  letter-spacing: -2px;
+}
+
+.aqi-card-bottom {
+  color: #94a3b8;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.daily-plan-generator {
+  background: #141e2f;
+  border: 1px solid #263449;
+  border-radius: 22px;
+  padding: 26px;
+  margin-bottom: 30px;
+}
+
+.generator-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.generator-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  font-size: 23px;
+}
+
+.generator-heading h2 {
+  margin: 0 0 6px;
+  font-size: 21px;
+}
+
+.generator-heading p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.daily-plan-generator input {
+  width: 100%;
+  box-sizing: border-box;
+  background: #0c1422;
+  color: white;
+  border: 1px solid #2c3a50;
+  border-radius: 14px;
+  padding: 16px;
+  outline: none;
+  margin-bottom: 16px;
+}
+
+.daily-plan-generator input:focus {
+  border-color: #34d399;
+}
+
+.generate-plan-button {
+  background: linear-gradient(135deg, #34d399, #22c55e);
+  border: none;
+  border-radius: 13px;
+  padding: 15px 22px;
+  color: #06251a;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.generate-plan-button:hover {
+  transform: translateY(-2px);
+}
+
+.generate-plan-button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.daily-plan-error {
+  color: #f87171;
+  margin-top: 15px;
+}
+
+.generated-plan-area {
+  margin-top: 30px;
+}
+
+.generated-plan-heading {
+  margin-bottom: 22px;
+}
+
+.generated-plan-heading h2 {
+  font-size: 25px;
+  margin: 0;
+}
+
+.plan-section-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.plan-section-card {
+  background: #141e2f;
+  border: 1px solid #263449;
+  border-radius: 20px;
+  padding: 24px;
+  transition: transform 0.2s, border-color 0.2s;
+  min-width: 0;
+}
+
+.plan-section-card:hover {
+  transform: translateY(-3px);
+  border-color: #3a526d;
+}
+
+.plan-section-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+  background: rgba(255, 255, 255, 0.05);
+  margin-bottom: 18px;
+}
+
+.plan-section-card h3 {
+  font-size: 18px;
+  margin: 0 0 14px;
+  color: #f1f5f9;
+}
+
+.plan-section-card p {
+  color: #bac6d6;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+
+.full-plan-card {
+  grid-column: 1 / -1;
+}
+
+.plan-loading {
+  text-align: center;
+  background: #141e2f;
+  border: 1px solid #263449;
+  border-radius: 22px;
+  padding: 40px 20px;
+  margin-bottom: 25px;
+}
+
+.plan-loading h3 {
+  margin: 20px 0 10px;
+}
+
+.plan-loading p {
+  color: #94a3b8;
+}
+
+.plan-loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #263449;
+  border-top: 3px solid #34d399;
+  border-radius: 50%;
+  margin: auto;
+  animation: planSpin 1s linear infinite;
+}
+
+@keyframes planSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .daily-plan-container {
+    padding: 16px;
+  }
+
+  .daily-plan-aqi,
+  .plan-section-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-plan-title h1 {
+    font-size: 26px;
+  }
+
+  .daily-plan-generator,
+  .plan-section-card,
+  .daily-plan-aqi-card {
+    padding: 20px;
+  }
+}
+.health-risk-card {
+  background: #141e2f;
+  border: 1px solid #263449;
+  border-radius: 22px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.health-risk-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.health-risk-top h2 {
+  margin: 0 0 15px;
+}
+
+.health-risk-indicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: 0 0 18px currentColor;
+}
+
+.health-risk-card h3 {
+  font-size: 23px;
+  margin: 10px 0;
+}
+
+.health-risk-card p {
+  color: #bac6d6;
+  line-height: 1.7;
+}
+
+.health-risk-scale {
+  width: 100%;
+  height: 8px;
+  border-radius: 20px;
+  background: #273449;
+  overflow: hidden;
+  margin: 20px 0 10px;
+}
+
+.health-risk-scale div {
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.5s ease;
+}
+
+.health-risk-card small {
+  color: #94a3b8;
+}
