@@ -1,62 +1,67 @@
 # AirCare AI 🌿
 
-AirCare AI is a React/Vite environmental-health dashboard with an Express API and a local Ollama-powered assistant. It provides AQI context, pollutant information, daily guidance, indoor-air tips and a lightweight sustainable-habits tracker.
+AirCare AI is a React/Vite environmental-health dashboard with an Express API. It provides AQI context, pollutant information, daily guidance, indoor-air tips, a lightweight sustainable-habits tracker, and an AI assistant powered by Groq (cloud) or Ollama (local development).
 
 ## AQI data transparency
-- When configured, backend attempts WAQI feed data.
-- If the feed is unavailable, the app falls back to Open-Meteo modelled data.
+- When configured, the backend attempts WAQI feed data.
+- If the feed is unavailable or `WAQI_TOKEN` is omitted, the app falls back to Open-Meteo modelled data.
 - Open-Meteo's `us_aqi` is a **US AQI estimate**, not India's CPCB AQI.
 - WAQI feed data is not automatically a CPCB official reading.
 - The dashboard displays source/type and timestamp when supplied.
 - Indoor Air guidance is not indoor sensor monitoring; Eco Impact checklist points are not measured emissions estimates.
 
-## Requirements
-- Node.js 18+ (tested target: Node 22)
-- Ollama installed and running
-- Ollama model `llama3.2:3b` pulled locally
+## Local Development
 
-## Start
+### Requirements
+- Node.js 22+ (matches `openai` SDK requirement)
+- Either:
+  - **Local AI**: Ollama installed and running with `llama3.2:3b` (`ollama pull llama3.2:3b`), or
+  - **Cloud AI**: A free Groq API key from https://console.groq.com/
 
-### Frontend (project root)
-```bash
-npm install
-npm run dev
-```
-
-### Backend (second terminal)
+### 1. Backend
 ```bash
 cd backend
 npm install
 ```
-Copy `backend/.env.example` to `backend/.env` and fill in a **newly generated** WAQI token if you have one. Do not commit `.env` files. `dotenv` loads backend environment configuration.
+Copy `backend/.env.example` to `backend/.env` and configure either `AI_PROVIDER=ollama` (for local Ollama) or `AI_PROVIDER=groq` + `AI_API_KEY=...` (for Groq). Optionally set `WAQI_TOKEN`. Never commit `.env` files.
 
 ```bash
-node server.js
+npm start
 ```
+The backend runs on `http://localhost:5000`.
 
-The backend runs on `http://localhost:5000`. The Vite frontend runs on `http://localhost:5173`.
+### 2. Frontend (from `AirCare_AI` root)
+```bash
+npm install
+npm run dev
+```
+The Vite frontend runs on `http://localhost:5173`. Copy `.env.example` to `.env` if you want to customize `VITE_API_URL`.
 
-If deployed, set `VITE_API_URL` in a root `.env` file to the backend URL, and set `FRONTEND_ORIGIN` in backend environment variables to the frontend origin (comma-separated origins are supported). Ensure Ollama is reachable from the backend deployment environment; a local Ollama server is not automatically available on cloud hosts.
+## Free Cloud Deployment (Vercel + Render + Groq)
+
+1. **Get a free Groq API key** (no credit card required) at https://console.groq.com/.
+2. **Deploy Backend on Render** (free Web Service, no credit card required):
+   - Connect your GitHub repo (`AirCare_AI` root).
+   - Set **Root Directory** to `backend`, **Build Command** to `npm install`, **Start Command** to `npm start`, and **Health Check Path** to `/health` (or deploy via `render.yaml`).
+   - Add environment variables in Render (`NODE_ENV=production`, `AI_PROVIDER=groq`, `AI_BASE_URL=https://api.groq.com/openai/v1`, `AI_MODEL=llama-3.1-8b-instant`, `AI_API_KEY`, optional `WAQI_TOKEN`, and `FRONTEND_ORIGIN` once Vercel is deployed).
+3. **Deploy Frontend on Vercel** (free Hobby tier):
+   - Import the GitHub repo in Vercel (framework: Vite, build: `npm run build`, output: `dist`).
+   - Set `VITE_API_URL` in Vercel Environment Variables to your Render backend URL (e.g. `https://your-backend.onrender.com`, no trailing slash).
+   - Redeploy Vercel after setting `VITE_API_URL`, then update `FRONTEND_ORIGIN` in Render to your Vercel URL.
 
 ## API
-- `GET /` health information
+- `GET /` and `GET /health` service status & non-secret configuration state
 - `GET /api/aqi?location=Delhi`
 - `GET /api/aqi?lat=28.6&lon=77.2&label=Delhi`
 - `POST /api/chat` with `{messages, context}`
 - `POST /api/plan` with `{aqi, pm25, activity, location, source, dataType}`
 
 ## Limitations
-- In-memory rate limiting is intended for a demo, not multi-instance production deployment.
-- WAQI feed coverage, availability and token access may vary by location.
+- Render's free web service spins down after 15 minutes of inactivity (~30–60s cold start on the first request).
+- In-memory rate limiting is intended for a single-instance demo, not multi-instance production deployment.
+- WAQI feed coverage, availability, and token access may vary by location.
 - Health content is informational, not medical diagnosis or treatment.
 - The app does not currently include physical indoor air sensors, validated exposure models, or measured emissions accounting.
-
-## Demo flow
-1. Open the dashboard and check source and timestamp.
-2. Use location detection or change coordinates via location permission.
-3. Ask the assistant about the current conditions.
-4. Generate a daily plan.
-5. Review indoor air tips and mark sustainable habits.
 
 ## Build
 ```bash

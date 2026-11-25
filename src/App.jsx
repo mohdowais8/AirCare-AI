@@ -1,5 +1,6 @@
 import DailyPlan from "./DailyPlan.jsx";
 import ChatAssistant from "./ChatAssistant.jsx";
+import { apiUrl } from "./api.js";
 import { useState, useEffect } from "react";
 import React from "react";
 import {
@@ -259,7 +260,7 @@ function App() {
     setAqiLoading(true);
     setAqiError(false);
     try {
-      const response = await fetch(`http://localhost:5000/api/aqi?lat=${latitude}&lon=${longitude}&label=${encodeURIComponent(locationName)}`);
+      const response = await fetch(apiUrl(`/api/aqi?lat=${latitude}&lon=${longitude}&label=${encodeURIComponent(locationName)}`));
       if (!response.ok) throw new Error("AQI fetch failed");
       const data = await response.json();
       if (data.error || data.aqi == null) throw new Error(data.error || "AQI unavailable");
@@ -282,7 +283,7 @@ function App() {
     if (!query || !query.trim()) return;
     setAqiLoading(true); setAqiError(false); setLocationError("");
     try {
-      const response = await fetch(`http://localhost:5000/api/aqi?location=${encodeURIComponent(query.trim())}`);
+      const response = await fetch(apiUrl(`/api/aqi?location=${encodeURIComponent(query.trim())}`));
       if (!response.ok) throw new Error("Location search failed");
       const data = await response.json();
       if (data.error || data.aqi == null) throw new Error(data.error || "AQI unavailable");

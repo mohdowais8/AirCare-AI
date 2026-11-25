@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import { apiUrl } from "./api.js";
 import "./DailyPlan.css";
 
 export default function DailyPlan({ aqi, pm25, loading, error, location, source, dataType }) {
@@ -19,7 +20,7 @@ export default function DailyPlan({ aqi, pm25, loading, error, location, source,
     setPlan("");
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/plan`, {
+      const response = await fetch(apiUrl("/api/plan"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ aqi, pm25, activity, location, source, dataType }),
@@ -31,7 +32,11 @@ export default function DailyPlan({ aqi, pm25, loading, error, location, source,
 
       setPlan(data.plan || "No plan generated.");
     } catch (err) {
-      setPlanError("Unable to generate your AI plan. Check your backend.");
+      const message =
+        err?.message && err.message !== "Failed to fetch"
+          ? err.message
+          : "Unable to generate your AI plan. Check your backend connection and retry.";
+      setPlanError(message);
     } finally {
       setGenerating(false);
     }

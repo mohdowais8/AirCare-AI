@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { apiUrl } from "./api.js";
 import "./ChatAssistant.css";
 
 function ChatAssistant({ currentAQI, pm25, location, aqiStatus, dataSource, dataType, readingTime }) {
@@ -29,7 +30,7 @@ function ChatAssistant({ currentAQI, pm25, location, aqiStatus, dataSource, data
     setLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/chat`, {
+      const response = await fetch(apiUrl("/api/chat"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -57,11 +58,16 @@ function ChatAssistant({ currentAQI, pm25, location, aqiStatus, dataSource, data
     } catch (error) {
       console.error(error);
 
+      const message =
+        error?.message && error.message !== "Failed to fetch"
+          ? error.message
+          : "Unable to connect to AirCare AI server. If it is waking up, please try again in a few seconds.";
+
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "Unable to connect to AirCare AI server.",
+          content: message,
         },
       ]);
     } finally {

@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: aircare-ai-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: AI_PROVIDER
+        value: groq
+      - key: AI_BASE_URL
+        value: https://api.groq.com/openai/v1
+      - key: AI_MODEL
+        value: llama-3.1-8b-instant
+      - key: AI_API_KEY
+        sync: false
+      - key: WAQI_TOKEN
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
